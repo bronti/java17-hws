@@ -112,4 +112,37 @@ public class DictionaryTest {
         assertEquals("aaa_val", dict.get("aaa"));
         assertEquals("aaa_val", dict.get("aaa"));
     }
+
+    @Test
+    public void testSimpleClear() {
+        Dictionary dict = new DictionaryImpl();
+
+        assertEquals(null, dict.put("aaa", "aaa_val"));
+        dict.clear();
+
+        assertEquals(0, dict.size());
+        assertFalse(dict.contains("aaa"));
+    }
+
+    @Test
+    public void testEmptyClear() {
+        Dictionary dict = new DictionaryImpl();
+
+        dict.clear();
+
+        assertEquals(0, dict.size());
+        assertFalse(dict.contains("aaa"));
+    }
+
+    @Test
+    public void testDoubleClear() {
+        Dictionary dict = new DictionaryImpl();
+
+        assertEquals(null, dict.put("aaa", "aaa_val"));
+        dict.clear();
+        dict.clear();
+
+        assertEquals(0, dict.size());
+        assertFalse(dict.contains("aaa"));
+    }
 }
