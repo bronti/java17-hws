@@ -8,11 +8,7 @@ public class TrieImpl implements Trie {
     private static final int LETTERS_COUNT = 52;
     private int wordCount = 0;
     private boolean isTerminal = false;
-    private boolean isRedundant = false;
     private TrieImpl[] children = new TrieImpl[LETTERS_COUNT];
-
-    public TrieImpl() {
-    }
 
     private static int charToInd(char c) {
         if (c >= 'a' && c <= 'z') {
@@ -24,15 +20,15 @@ public class TrieImpl implements Trie {
         throw new IllegalArgumentException();
     }
 
-    private static int indToChar(int i) {
-        if (i >= 0 && i < LETTERS_COUNT / 2) {
-            return 'a' + i;
-        }
-        if (i >= LETTERS_COUNT / 2 && i < LETTERS_COUNT) {
-            return 'A' + i - LETTERS_COUNT / 2;
-        }
-        throw new IllegalArgumentException();
-    }
+//    private static int indToChar(int i) {
+//        if (i >= 0 && i < LETTERS_COUNT / 2) {
+//            return 'a' + i;
+//        }
+//        if (i >= LETTERS_COUNT / 2 && i < LETTERS_COUNT) {
+//            return 'A' + i - LETTERS_COUNT / 2;
+//        }
+//        throw new IllegalArgumentException();
+//    }
 
     @Override
     public boolean add(String element) {
@@ -95,13 +91,6 @@ public class TrieImpl implements Trie {
             } else {
                 isTerminal = false;
                 wordCount--;
-                isRedundant = true;
-                for (TrieImpl child : children) {
-                    if (child != null) {
-                        isRedundant = false;
-                        break;
-                    }
-                }
                 return true;
             }
         }
@@ -110,7 +99,7 @@ public class TrieImpl implements Trie {
             return false;
         }
         boolean res = children[currInd].removeSuffix(element, at + 1);
-        if (children[currInd].isRedundant) {
+        if (children[currInd].wordCount == 0) {
             children[currInd] = null;
         }
         if (res) {
