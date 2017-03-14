@@ -2,6 +2,10 @@ package ru.spbau.mit;
 
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -122,5 +126,61 @@ public class TrieTest {
         assertFalse(trie.contains("aaaaa"));
         assertTrue(trie.contains("aaa"));
         assertFalse(trie.contains(""));
+    }
+
+    @Test
+    public void testEmptySerialize() {
+        TrieImpl before = new TrieImpl();
+        TrieImpl after = new TrieImpl();
+        after.add("aaa");
+
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        try {
+            before.serialize(outStream);
+            ByteArrayInputStream inStream = new ByteArrayInputStream(outStream.toByteArray());
+            after.deserialize(inStream);
+        }
+        catch (IOException e) {}
+        assertTrue(before.equals(after));
+    }
+
+    @Test
+    public void testSimpleSerialize() {
+        TrieImpl before = new TrieImpl();
+        TrieImpl after = new TrieImpl();
+
+        before.add("aaa");
+        before.add("");
+
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        try {
+            before.serialize(outStream);
+            ByteArrayInputStream inStream = new ByteArrayInputStream(outStream.toByteArray());
+            after.deserialize(inStream);
+        }
+        catch (IOException e) {}
+        assertTrue(before.equals(after));
+    }
+
+    @Test
+    public void testLessSimpleSerialize() {
+        TrieImpl before = new TrieImpl();
+        TrieImpl after = new TrieImpl();
+
+        before.add("aaa");
+        before.add("c");
+        before.add("aba");
+        before.add("aa");
+        before.add("bba");
+        before.add("bbbbc");
+
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        try {
+            before.serialize(outStream);
+            ByteArrayInputStream inStream = new ByteArrayInputStream(outStream.toByteArray());
+            after.deserialize(inStream);
+        }
+        catch (IOException e) {}
+        assertTrue(before.equals(after));
     }
 }

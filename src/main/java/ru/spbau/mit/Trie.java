@@ -1,4 +1,7 @@
 package ru.spbau.mit;
+
+import java.io.Serializable;
+
 public interface Trie {
 
     /**
